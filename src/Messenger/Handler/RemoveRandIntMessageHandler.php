@@ -15,7 +15,7 @@ class RemoveRandIntMessageHandler
     {
     }
 
-    public function __invoke(RemoveRandIntMessage $message)
+    public function __invoke(RemoveRandIntMessage $message): void
     {
         $id = $message->getId();
 
@@ -26,5 +26,6 @@ class RemoveRandIntMessageHandler
         }
 
         $this->em->remove($removedNumber);
+        $this->em->flush();
     }
 }
