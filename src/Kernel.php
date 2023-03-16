@@ -7,5 +7,6 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 class Kernel extends BaseKernel
 {
+    // ветка для тестирования работы messenger
     use MicroKernelTrait;
 }
