@@ -3,51 +3,6 @@ framework:
         failure_transport: failed
 
         transports:
-
-            external_messages:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                serializer: App\Messenger\Serializer\ExternalJsonMessengerSerializer
-                options:
-                    auto_setup: false
-                    exchange:
-                        name: messages
-                        type: direct
-                        default_publish_routing_key: from_external
-                    queues:
-                        messages_from_external:
-                            binding_keys: [from_external]
-
-            async_fanout_messages:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                options:
-                    exchange:
-                        name: fanout_
-                        type: fanout
-                    queues:
-                        messages_from_fanout: ~
-
-            another_fanout_messages:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                options:
-                    exchange:
-                        name: fanout_
-                        type: fanout
-                    queues:
-                        messages_from_another_fanout: ~
-
-            # https://symfony.com/doc/current/messenger.html#transport-configuration
-            async_high_priority:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                serializer: messenger.transport.symfony_serializer
-                retry_strategy:
-                    delay: 500
-                options:
-                    exchange:
-                        name: high
-                        type: direct
-                    queues:
-                        high: ~
-
             async:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 retry_strategy:
@@ -67,9 +22,6 @@ framework:
             Symfony\Component\Notifier\Message\ChatMessage: async
             Symfony\Component\Notifier\Message\SmsMessage: async
 
-            'App\Messenger\Message\GenerateRandomNumberMessage': async_high_priority
-            'App\Messenger\Message\RemoveRandIntMessage': async
-            'App\Messenger\Message\SayHelloMessage': async_fanout_messages
 
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
