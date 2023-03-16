@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Messenger\Message\GenerateRandomNumberMessage;
 use App\Messenger\Message\LogEmoji;
+use App\Messenger\Message\SayHelloMessage;
 use Messenger\Message\RemoveRandIntMessage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,6 +46,22 @@ class MyController extends AbstractController
 
         return $this->json([
             'message' => 'Number with id=' . $id . ' will be removed'
+        ]);
+    }
+
+    #[Route('/sayhello')]
+    public function sayHello( MessageBusInterface $bus): Response
+    {
+        $message = new SayHelloMessage();
+
+//        $envelope = new Envelope($message, [
+//            new DelayStamp(1000)
+//        ]);
+
+        $bus->dispatch($message);
+
+        return $this->json([
+           'message' => 'Сообщение отправлено и будет отображено в логах!'
         ]);
     }
 }

@@ -17,6 +17,24 @@ framework:
                         messages_from_external:
                             binding_keys: [from_external]
 
+            async_fanout_messages:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange:
+                        name: fanout_
+                        type: fanout
+                    queues:
+                        messages_from_fanout: ~
+
+            another_fanout_messages:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange:
+                        name: fanout_
+                        type: fanout
+                    queues:
+                        messages_from_another_fanout: ~
+
             # https://symfony.com/doc/current/messenger.html#transport-configuration
             async_high_priority:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
@@ -44,8 +62,6 @@ framework:
                             binding_keys: [normal]
 
             failed: 'doctrine://default?queue_name=failed'
-
-
         routing:
             Symfony\Component\Mailer\Messenger\SendEmailMessage: async
             Symfony\Component\Notifier\Message\ChatMessage: async
@@ -53,6 +69,7 @@ framework:
 
             'App\Messenger\Message\GenerateRandomNumberMessage': async_high_priority
             'App\Messenger\Message\RemoveRandIntMessage': async
+            'App\Messenger\Message\SayHelloMessage': async_fanout_messages
 
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
