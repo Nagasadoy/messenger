@@ -3,8 +3,11 @@
 namespace App\Model\Ingredient\Entity\Ingredient;
 
 use App\Model\EntityNotFoundException;
+use App\Model\User\Entity\User\User;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Uid\Uuid;
 
 class IngredientRepository
 {
@@ -15,7 +18,6 @@ class IngredientRepository
     {
         $this->repo = $entityManager->getRepository(Ingredient::class);
         $this->entityManager = $entityManager;
-//        $this->repo = $this->entityManager->getRepository(Ingredient::class);
     }
 
     public function add(Ingredient $ingredient): void
@@ -39,5 +41,11 @@ class IngredientRepository
         $ingredient = $this->repo->findOneBy(['name' => $name]);
 
         return $ingredient !== null;
+    }
+
+    public function remove(Uuid $uuid): void
+    {
+        $ingredient = $this->get($uuid);
+        $this->entityManager->remove($ingredient);
     }
 }

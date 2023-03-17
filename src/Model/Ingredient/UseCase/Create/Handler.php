@@ -17,11 +17,11 @@ class Handler
     {
         $name = $command->name;
         $ingredient = new Ingredient($name);
-//        if ($this->ingredientRepository->isAlreadyExists($name)) {
-//            throw new \DomainException('Ingredient already exists');
-//        }
-//
-//        $this->ingredientRepository->add($ingredient);
+        if ($this->ingredientRepository->isAlreadyExists($name)) {
+            throw new \DomainException('Ingredient already exists');
+        }
+
+        $this->ingredientRepository->add($ingredient);
         $this->flusher->flush();
     }
 }

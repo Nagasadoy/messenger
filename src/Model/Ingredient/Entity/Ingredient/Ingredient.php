@@ -3,8 +3,9 @@
 namespace App\Model\Ingredient\Entity\Ingredient;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: IngredientRepository::class)]
+#[ORM\Entity]
 class Ingredient
 {
     /**
@@ -23,10 +24,21 @@ class Ingredient
     public function __construct(string $name)
     {
         $this->name = $name;
+        $this->id = Uuid::v4();
     }
 
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    private function getId(): string
+    {
+        return $this->id;
     }
 }
