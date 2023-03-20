@@ -23,6 +23,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Model/Ingredient/Entity/Ingredient'
                 prefix: 'App\Model\Ingredient\Entity'
                 alias: Ingredient
+            Pizza:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Model/Pizza/Entity/Pizza'
+                prefix: 'App\Model\Pizza\Entity'
+                alias: Pizza
 
 when@test:
     doctrine:

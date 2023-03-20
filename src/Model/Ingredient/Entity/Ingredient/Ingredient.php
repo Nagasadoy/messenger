@@ -8,11 +8,6 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Entity]
 class Ingredient
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="guid")
-     */
-
     #[ORM\Id]
     #[ORM\Column(type: 'guid')]
     private string $id;

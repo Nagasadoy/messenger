@@ -3,8 +3,6 @@
 namespace App\Model\Ingredient\Entity\Ingredient;
 
 use App\Model\EntityNotFoundException;
-use App\Model\User\Entity\User\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Uid\Uuid;
