@@ -8,10 +8,14 @@ use Doctrine\ORM\EntityRepository;
 
 class PizzaRepository
 {
+
+    private EntityRepository $repo;
+
     public function __construct(
-        private readonly EntityRepository $repo,
         private readonly EntityManagerInterface $entityManager
-    ) { }
+    ) {
+        $this->repo = $this->entityManager->getRepository(Pizza::class);
+    }
 
     public function get(string $id): Pizza
     {

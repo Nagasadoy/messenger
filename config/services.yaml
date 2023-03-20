@@ -26,3 +26,6 @@ services:
     App\Resolver\Resolver:
         tags:
             - { name: controller.argument_value_resolver, priority: 150 }
+
+    App\Model\EventDispatcher:
+        class: App\Event\Dispatcher\MessengerEventDispatcher

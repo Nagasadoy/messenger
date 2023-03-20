@@ -2,20 +2,25 @@
 
 namespace App\Model\Pizza\Entity\Pizza;
 
+use App\Model\AggregateRoot;
+use App\Model\EventsTrait;
 use App\Model\Ingredient\Entity\Ingredient\Ingredient;
+use App\Model\Pizza\Entity\Pizza\Event\AddIngredientEvent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
-class Pizza
+class Pizza implements AggregateRoot
 {
+    use EventsTrait;
+
     #[ORM\Id]
     #[ORM\Column(type: 'guid')]
     private string $id;
 
-    #[ORM\Column]
+    #[ORM\Column(unique: true)]
     public string $name;
 
     #[ORM\Column]
@@ -36,6 +41,7 @@ class Pizza
     public function addIngredient(Ingredient $ingredient): void
     {
         $this->ingredients->add($ingredient);
+        $this->recordEvent(new AddIngredientEvent($this->id, $ingredient->getId()));
     }
 
     public function removeIngredient(Ingredient $ingredient): void

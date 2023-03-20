@@ -32,7 +32,7 @@ class Ingredient
         $this->name = $name;
     }
 
-    private function getId(): string
+    public function getId(): string
     {
         return $this->id;
     }
