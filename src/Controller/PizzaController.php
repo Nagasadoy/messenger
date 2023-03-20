@@ -36,7 +36,7 @@ class PizzaController extends AbstractController
         return $this->json(['message' => 'Pizza is created']);
     }
 
-    #[Route('api/pizza/addIngredient')]
+    #[Route('api/pizza/addIngredient', methods: ['POST'])]
     public function addIngredient(
         #[FromRequest] UseCase\AddIngredient\AddIngredientCommand $command,
         UseCase\AddIngredient\Handler $handler
@@ -46,7 +46,7 @@ class PizzaController extends AbstractController
         return $this->json(['message' => 'Ингредиент добавлен!']);
     }
 
-    #[Route('api/pizza')]
+    #[Route('api/pizza', methods: ['GET'])]
     public function getAllPizzas(Request $request, PizzaFetcher $fetcher): Response
     {
         $pagination = $fetcher->all(
