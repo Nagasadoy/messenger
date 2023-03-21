@@ -21,10 +21,13 @@ class Pizza implements AggregateRoot
     private string $id;
 
     #[ORM\Column(unique: true)]
-    public string $name;
+    private string $name;
 
     #[ORM\Column]
-    public int $price;
+    private int $price;
+
+    #[ORM\Column]
+    private string $description;
 
     #[ORM\ManyToMany(targetEntity: Ingredient::class)]
     public Collection $ingredients;

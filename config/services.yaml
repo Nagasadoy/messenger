@@ -29,3 +29,9 @@ services:
 
     App\Model\EventDispatcher:
         class: App\Event\Dispatcher\MessengerEventDispatcher
+
+    App\Controller\UserController:
+        tags: [ 'controller.service_arguments' ]
+        public: true
+        arguments:
+            - '@fos_elastica.finder.user'
