@@ -6,6 +6,7 @@ use App\Model\AggregateRoot;
 use App\Model\EventsTrait;
 use App\Model\Ingredient\Entity\Ingredient\Ingredient;
 use App\Model\Pizza\Entity\Pizza\Event\AddIngredientEvent;
+use App\Model\Pizza\Entity\Pizza\Event\CreatePizzaEvent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,6 +16,8 @@ use Symfony\Component\Uid\Uuid;
 class Pizza implements AggregateRoot
 {
     use EventsTrait;
+
+    public const PIZZA_INDEX = 'pizza_index'; // индекс для elastic search
 
     #[ORM\Id]
     #[ORM\Column(type: 'guid')]
@@ -32,13 +35,16 @@ class Pizza implements AggregateRoot
     #[ORM\ManyToMany(targetEntity: Ingredient::class)]
     public Collection $ingredients;
 
-    public function __construct(Uuid $id, string $name, int $price)
+    public function __construct(Uuid $id, string $name, int $price, string $description)
     {
         $this->id = $id;
         $this->name = $name;
         $this->price = $price;
+        $this->description = $description;
 
         $this->ingredients = new ArrayCollection();
+
+        $this->recordEvent(new CreatePizzaEvent($id, $name, $description, $price));
     }
 
     public function addIngredient(Ingredient $ingredient): void
@@ -70,6 +76,11 @@ class Pizza implements AggregateRoot
     public function getIngredients(): Collection
     {
         return $this->ingredients;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 
 }

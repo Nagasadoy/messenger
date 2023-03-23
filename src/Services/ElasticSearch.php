@@ -31,7 +31,7 @@ class ElasticSearch
 
     }
 
-    public function createIndex(string $indexName): array
+    public function createIndex(string $indexName, array $mappings): array
     {
         $body = [
             'settings' => [
@@ -63,20 +63,23 @@ class ElasticSearch
                     ]
                 ]
             ],
-            'mappings' => [
-                'properties' => [
-                    'name' => [
-                        'type' => 'text'
-                    ],
-                    'age' => [
-                        'type' => 'integer'
-                    ],
-                    'comment' => [
-                        'type' => 'text'
-                    ]
-                ]
-            ]
+            'mappings' => $mappings
         ];
+
+        // Mappings
+//        [
+//            'properties' => [
+//                'name' => [
+//                    'type' => 'text'
+//                ],
+//                'age' => [
+//                    'type' => 'integer'
+//                ],
+//                'comment' => [
+//                    'type' => 'text'
+//                ]
+//            ]
+//        ]
 
         try {
             $response = $this->client->indices()->create([
@@ -89,13 +92,16 @@ class ElasticSearch
         return $response;
     }
 
-    public function addDocument(string $indexName, array $body): void
+    public function addDocument(string $indexName, array $body, ?string $id = null): void
     {
-        $uid = UuidFactory::generateNew();
+        if (null === $id) {
+            $id = UuidFactory::generateNew();
+        }
+
         $params = [
             'index' => $indexName,
             'body' => $body,
-            'id' => $uid
+            'id' => $id
         ];
 
         try {

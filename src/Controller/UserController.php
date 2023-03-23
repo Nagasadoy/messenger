@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\Pizza\Entity\Pizza\Pizza;
 use App\Services\ElasticSearch;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,12 +19,12 @@ class UserController extends AbstractController
     #[Route('api/users', methods: ['GET'])]
     public function find(Request $request, ElasticSearch $elasticSearch): Response
     {
-        $query = $request->toArray()['query'] ?? '';
-        $elasticSearch->search('people_index', [
-            'match_phrase_prefix' => [
-                'comment' => $query
-            ]
-        ]);
+//        $query = $request->toArray()['query'] ?? '';
+//        $elasticSearch->search('people_index', [
+//            'match_phrase_prefix' => [
+//                'comment' => $query
+//            ]
+//        ]);
 
 //        $elasticSearch->search('people_index',[
 //            'bool' => [
@@ -41,7 +42,24 @@ class UserController extends AbstractController
 //            'comment' => 'Москва слезам не верит'
 //        ]);
 
-//        $elasticSearch->createIndex('people_index');
+        $mapping = [
+            'properties' => [
+                'name' => [
+                    'type' => 'text'
+                ],
+                'description' => [
+                    'type' => 'text'
+                ],
+                'price' => [
+                    'type' => 'integer'
+                ],
+                'id' => [
+                    'type' => 'text'
+                ]
+            ]
+        ];
+
+        $elasticSearch->createIndex(Pizza::PIZZA_INDEX, $mapping);
 //        $elasticSearch->deleteIndex('people_index');
 
 

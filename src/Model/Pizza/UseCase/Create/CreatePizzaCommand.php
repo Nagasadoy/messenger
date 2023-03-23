@@ -16,6 +16,6 @@ class CreatePizzaCommand
     #[Assert\Positive]
     public int $price;
 
-//    #[Assert\Collection()]
-//    public array $ingredients;
+    public string $description;
+
 }

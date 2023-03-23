@@ -24,6 +24,6 @@ class Handler
 
         $pizza = new Pizza($id, $name, $price);
         $this->pizzaRepository->add($pizza);
-        $this->flusher->flush();
+        $this->flusher->flush($pizza);
     }
 }
