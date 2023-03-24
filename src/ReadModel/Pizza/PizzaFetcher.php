@@ -40,9 +40,9 @@ class PizzaFetcher
             ->leftJoin('p', 'pizza_ingredient', 'p_i', 'p.id=p_i.pizza_id')
             ->leftJoin('p_i', 'ingredient', 'i', 'p_i.ingredient_id=i.id');
 
-        if (!\in_array($sort, ['name'], true)) {
-            throw new \UnexpectedValueException('Cannot sort by ' . $sort);
-        }
+//        if (!\in_array($sort, ['name'], true)) {
+//            throw new \UnexpectedValueException('Cannot sort by ' . $sort);
+//        }
 
         $qb->orderBy($sort, $direction === 'desc' ? 'desc' : 'asc');
 
@@ -86,6 +86,36 @@ class PizzaFetcher
             ]
         ]);
 
+        return $this->convertIntoArrayResponse($pizzas);
+    }
+
+    public function search(): array
+    {
+        $pizzas = $this->elasticSearch->search(Pizza::PIZZA_INDEX, [
+            'bool' => [
+                'must' => [
+                    'match_phrase' => [
+                        'description' => 'сыр'
+                    ]
+                ],
+                'must_not' => [
+                    'match_phrase' => [
+                        'description' => 'великолепно'
+                    ]
+                ],
+                'should' => [
+                    'match_phrase' => [
+                        'description' => 'колбаса'
+                    ]
+                ]
+            ]
+        ]);
+
+        return $this->convertIntoArrayResponse($pizzas);
+    }
+
+    private function convertIntoArrayResponse(array $pizzas): array
+    {
         $response = [];
 
         foreach ($pizzas as $pizza) {

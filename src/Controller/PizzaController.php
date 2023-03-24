@@ -74,7 +74,8 @@ class PizzaController extends AbstractController
     ): Response
     {
         $description = $dto->description;
-        $pizzas = $pizzaFetcher->getByDescription($description);
+//        $pizzas = $pizzaFetcher->getByDescription($description);
+        $pizzas = $pizzaFetcher->search();
         return $this->json($pizzas);
     }
 }

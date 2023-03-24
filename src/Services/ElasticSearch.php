@@ -113,9 +113,11 @@ class ElasticSearch
         }
     }
 
-    public function search(string $index, array $query)
+    public function search(string $index, array $query, int $from=0, int $size=50)
     {
         $params = [
+            'from' => $from,
+            'size' => $size,
             'index' => $index,
             'body' => [
                 'query' => $query
