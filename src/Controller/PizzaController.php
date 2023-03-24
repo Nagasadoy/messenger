@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Attribute\FromRequest;
+use App\Factory\UuidFactory;
 use App\Model\Pizza\Entity\Pizza\Pizza;
 use App\Model\Pizza\UseCase\Create\CreatePizzaCommand;
 use App\Model\Pizza\UseCase;
@@ -10,6 +11,7 @@ use App\ReadModel\Pizza\DTO\PizzaGetByDescriptionDTO;
 use App\ReadModel\Pizza\DTO\ResponsePizzaDTO;
 use App\ReadModel\Pizza\PizzaFetcher;
 use App\Services\ElasticSearch;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +45,7 @@ class PizzaController extends AbstractController
     #[Route('api/pizza/addIngredient', methods: ['POST'])]
     public function addIngredient(
         #[FromRequest] UseCase\AddIngredient\AddIngredientCommand $command,
-        UseCase\AddIngredient\Handler $handler
+        UseCase\AddIngredient\Handler                             $handler
     ): Response
     {
         $handler->handle($command);
@@ -61,7 +63,7 @@ class PizzaController extends AbstractController
         );
 
         return $this->json([
-           'pagination' => $pagination
+            'pagination' => $pagination
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace App\Fixtures;
 
 use App\Event\Dispatcher\MessengerEventDispatcher;
 use App\Factory\UuidFactory;
+use App\Model\Ingredient\Entity\Ingredient\Ingredient;
 use App\Model\Pizza\Entity\Pizza\Event\CreatePizzaEvent;
 use App\Model\Pizza\Entity\Pizza\Pizza;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -30,6 +31,9 @@ class PizzaFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create();
+
+        $ingredients = $this->generateIngredients($manager);
+
         for ($i = 0; $i < 100; $i++) {
             $uid = UuidFactory::generateNew();
             $name = $faker->unique()->word;
@@ -37,6 +41,14 @@ class PizzaFixtures extends Fixture
             $description = $this->generateDescription();
 
             $pizza = new Pizza($uid, $name, $price, $description);
+
+            $pizza->addIngredient($ingredients[random_int(0, count($ingredients) - 1)]);
+            try {
+                $pizza->addIngredient($ingredients[random_int(0, count($ingredients) - 1)]);
+            } catch (\Throwable $ex) {
+
+            }
+
             $manager->persist($pizza);
             $this->dispatcher->dispatch([new CreatePizzaEvent($uid, $name, $description, $price)]);
         }
@@ -57,5 +69,20 @@ class PizzaFixtures extends Fixture
         }
 
         return implode(' ', $description);
+    }
+
+    private function generateIngredients(ObjectManager $manager): array
+    {
+        $ingredients = [];
+
+        $ingredientNames = ['сыр', 'колбаса', 'томат', 'огурец', 'маслины', 'перец'];
+        foreach ($ingredientNames as $ingredientName) {
+            $ingredient = new Ingredient($ingredientName);
+            $manager->persist($ingredient);
+            $ingredients[] = $ingredient;
+        }
+        $manager->flush();
+
+        return $ingredients;
     }
 }

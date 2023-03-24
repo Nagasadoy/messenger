@@ -25,49 +25,20 @@ class PizzaFetcher
         $this->repository = $em->getRepository(User::class);
     }
 
-    public function all(int $page, int $size, string $sort, string $direction): \Knp\Component\Pager\Pagination\PaginationInterface
+    public function all(int $page, int $size, string $sort, string $direction): array
     {
-//        $qb = $this->connection->createQueryBuilder()
-//            ->select(
-//                'id',
-//                'date',
-//                'TRIM(CONCAT(name_first, \' \', name_last)) AS name',
-//                'email',
-//                'role',
-//                'status'
-//            )
-//            ->from('user_users');
-
         $qb = $this->connection->createQueryBuilder()
             ->select(
                 'p.id',
                 'p.name',
                 'p.price',
-                'i.name as ingredient_name'
+                'p.description',
+                'i.name as ingredient_name',
+                'i.id as ingredient_id'
             )
             ->from('pizza', 'p')
-            ->join('p', 'pizza_ingredient', 'p_i', 'p.id=p_i.pizza_id')
-            ->join('p_i', 'ingredient', 'i', 'p_i.ingredient_id=i.id');
-
-//        if ($filter->name) {
-//            $qb->andWhere($qb->expr()->like('LOWER(CONCAT(name_first, \' \', name_last))', ':name'));
-//            $qb->setParameter(':name', '%' . mb_strtolower($filter->name) . '%');
-//        }
-//
-//        if ($filter->email) {
-//            $qb->andWhere($qb->expr()->like('LOWER(email)', ':email'));
-//            $qb->setParameter(':email', '%' . mb_strtolower($filter->email) . '%');
-//        }
-//
-//        if ($filter->status) {
-//            $qb->andWhere('status = :status');
-//            $qb->setParameter(':status', $filter->status);
-//        }
-//
-//        if ($filter->role) {
-//            $qb->andWhere('role = :role');
-//            $qb->setParameter(':role', $filter->role);
-//        }
+            ->leftJoin('p', 'pizza_ingredient', 'p_i', 'p.id=p_i.pizza_id')
+            ->leftJoin('p_i', 'ingredient', 'i', 'p_i.ingredient_id=i.id');
 
         if (!\in_array($sort, ['name'], true)) {
             throw new \UnexpectedValueException('Cannot sort by ' . $sort);
@@ -75,7 +46,36 @@ class PizzaFetcher
 
         $qb->orderBy($sort, $direction === 'desc' ? 'desc' : 'asc');
 
-        return $this->paginator->paginate($qb, $page, $size);
+        $pagination = $this->paginator->paginate($qb, $page, $size);
+
+        $pizzas = [];
+
+        foreach ($pagination as $item) {
+            $id = $item['id'];
+            $pizzaName = $item['name'];
+            $description = $item['description'];
+            $ingredientId = $item['ingredient_id'];
+            $ingredientName = $item['ingredient_name'];
+
+
+            if (array_key_exists($id, $pizzas)) {
+                $pizzas[$id]['ingredients'][] = [
+                    'id' => $ingredientId,
+                    'name' => $ingredientName
+                ];
+            } else {
+                $pizzas[$id] = [
+                    'id' => $id,
+                    'name' => $pizzaName,
+                    'description' => $description,
+                    'ingredients' => [[
+                        'id' => $ingredientId,
+                        'name' => $ingredientName
+                    ]]
+                ];
+            }
+        }
+        return array_values($pizzas);
     }
 
     public function getByDescription(string $description): array

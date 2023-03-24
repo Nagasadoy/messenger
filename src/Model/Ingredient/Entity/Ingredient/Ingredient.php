@@ -16,10 +16,14 @@ class Ingredient
     #[Orm\Column]
     private string $name;
 
-    public function __construct(string $name)
+    public function __construct(string $name, ?string $uid = null)
     {
         $this->name = $name;
-        $this->id = Uuid::v4();
+        if (null === $uid) {
+            $this->id = Uuid::v4();
+        } else {
+            $this->id = $uid;
+        }
     }
 
     public function getName(): string
