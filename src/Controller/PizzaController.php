@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 use App\Attribute\FromRequest;
+use App\Model\Pizza\Entity\Pizza\Pizza;
 use App\Model\Pizza\UseCase\Create\CreatePizzaCommand;
 use App\Model\Pizza\UseCase;
+use App\ReadModel\Pizza\DTO\PizzaGetByDescriptionDTO;
+use App\ReadModel\Pizza\DTO\ResponsePizzaDTO;
 use App\ReadModel\Pizza\PizzaFetcher;
+use App\Services\ElasticSearch;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,5 +63,16 @@ class PizzaController extends AbstractController
         return $this->json([
            'pagination' => $pagination
         ]);
+    }
+
+    #[Route('api/pizza-by-name', methods: ['GET'])]
+    public function getPizzasByDescription(
+        #[FromRequest] PizzaGetByDescriptionDTO $dto,
+        PizzaFetcher $pizzaFetcher
+    ): Response
+    {
+        $description = $dto->description;
+        $pizzas = $pizzaFetcher->getByDescription($description);
+        return $this->json($pizzas);
     }
 }

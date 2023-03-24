@@ -59,9 +59,11 @@ class UserController extends AbstractController
             ]
         ];
 
-        $elasticSearch->createIndex(Pizza::PIZZA_INDEX, $mapping);
-//        $elasticSearch->deleteIndex('people_index');
+        $r = $elasticSearch->createIndex(Pizza::PIZZA_INDEX, $mapping);
+//        $r = $elasticSearch->deleteIndex(Pizza::PIZZA_INDEX);
 
+
+//        dd($r);
 
         return $this->json([
             'message' => 'message'

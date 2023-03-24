@@ -21,8 +21,9 @@ class Handler
         $id = UuidFactory::generateNew();
         $name = $command->name;
         $price = $command->price;
+        $description = $command->description;
 
-        $pizza = new Pizza($id, $name, $price);
+        $pizza = new Pizza($id, $name, $price, $description);
         $this->pizzaRepository->add($pizza);
         $this->flusher->flush($pizza);
     }

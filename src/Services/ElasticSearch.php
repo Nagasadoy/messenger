@@ -111,8 +111,6 @@ class ElasticSearch
         } catch (\Exception $e) {
             throw new \DomainException('Неизвестная ошибка!');
         }
-
-        dd($response);
     }
 
     public function search(string $index, array $query)
@@ -130,7 +128,6 @@ class ElasticSearch
             throw new \DomainException('Что-то пошло не так!');
         }
 
-        $hits = $response['hits']['hits'] ?? [];
-        dd($hits);
+        return $response['hits']['hits'] ?? [];
     }
 }
