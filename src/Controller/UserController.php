@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Pizza\Entity\Pizza\Pizza;
-use App\Services\ElasticSearch;
+use App\Services\ElasticSearch\ElasticSearch;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

@@ -3,20 +3,15 @@
 namespace App\Controller;
 
 use App\Attribute\FromRequest;
-use App\Factory\UuidFactory;
-use App\Model\Pizza\Entity\Pizza\Pizza;
-use App\Model\Pizza\UseCase\Create\CreatePizzaCommand;
 use App\Model\Pizza\UseCase;
+use App\Model\Pizza\UseCase\Create\CreatePizzaCommand;
 use App\ReadModel\Pizza\DTO\PizzaGetByDescriptionDTO;
-use App\ReadModel\Pizza\DTO\ResponsePizzaDTO;
 use App\ReadModel\Pizza\PizzaFetcher;
-use App\Services\ElasticSearch;
-use Doctrine\Common\Collections\ArrayCollection;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use OpenApi\Attributes as OA;
 
 class PizzaController extends AbstractController
 {

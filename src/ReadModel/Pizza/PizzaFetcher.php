@@ -5,7 +5,7 @@ namespace App\ReadModel\Pizza;
 use App\Model\Pizza\Entity\Pizza\Pizza;
 use App\Model\User\Entity\User\User;
 use App\ReadModel\Pizza\DTO\ResponsePizzaDTO;
-use App\Services\ElasticSearch;
+use App\Services\ElasticSearch\ElasticSearch;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;

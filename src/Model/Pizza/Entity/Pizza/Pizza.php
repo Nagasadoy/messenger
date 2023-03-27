@@ -2,6 +2,7 @@
 
 namespace App\Model\Pizza\Entity\Pizza;
 
+use App\Event\Dispatcher\Message\Message;
 use App\Model\AggregateRoot;
 use App\Model\EventsTrait;
 use App\Model\Ingredient\Entity\Ingredient\Ingredient;
@@ -50,7 +51,8 @@ class Pizza implements AggregateRoot
     public function addIngredient(Ingredient $ingredient): void
     {
         $this->ingredients->add($ingredient);
-        $this->recordEvent(new AddIngredientEvent($this->id, $ingredient->getId()));
+        $message = new Message(new AddIngredientEvent($this->id, $ingredient->getId()));
+        $this->recordEvent($message);
     }
 
     public function removeIngredient(Ingredient $ingredient): void

@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Event\Dispatcher\Message;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class Handler implements MessageHandlerInterface
+#[AsMessageHandler]
+class Handler
 {
-    private $dispatcher;
+    private EventDispatcherInterface $dispatcher;
 
     public function __construct(EventDispatcherInterface $dispatcher)
     {
