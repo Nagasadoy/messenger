@@ -26,7 +26,8 @@ class RabbitmqController extends AbstractController
     #[Route('api/rabbitmq_consume')]
     public function consumeHello(RabbitMq $rabbitMq): Response
     {
-        $rabbitMq->consume();
+//        $rabbitMq->consume();
+        $rabbitMq->consumeDirect();
 
         return $this->json([
             'message' => 'message received maybe'
