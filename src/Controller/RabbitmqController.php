@@ -27,7 +27,9 @@ class RabbitmqController extends AbstractController
     public function consumeHello(RabbitMq $rabbitMq): Response
     {
 //        $rabbitMq->consume();
-        $rabbitMq->consumeDirect();
+//        $rabbitMq->consumeDirect();
+//        $rabbitMq->consumeTopic();
+        $rabbitMq->consumeFanout();
 
         return $this->json([
             'message' => 'message received maybe'
@@ -38,6 +40,24 @@ class RabbitmqController extends AbstractController
     public function logs(RabbitMq $rabbitMq): Response
     {
         $rabbitMq->sendInfo();
+        return $this->json([
+            'message' => 'message received maybe'
+        ]);
+    }
+
+    #[Route('api/topic_exchanges')]
+    public function topicExchange(RabbitMq $rabbitMq): Response
+    {
+        $rabbitMq->sendTopic();
+        return $this->json([
+            'message' => 'message received maybe'
+        ]);
+    }
+
+    #[Route('api/fanout_exchanges')]
+    public function fanoutExchange(RabbitMq $rabbitMq): Response
+    {
+        $rabbitMq->sendFanout();
         return $this->json([
             'message' => 'message received maybe'
         ]);
