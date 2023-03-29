@@ -65,7 +65,11 @@ class RabbitMq
         $this->channel->queue_bind('queue_logs_ifo', 'logs', 'info');
         $this->channel->queue_bind('queue_logs_warn', 'logs', 'warn');
         $this->channel->queue_bind('queue_logs_err', 'logs', 'err');
-        $this->channel->queue_bind('queue_logs_all', 'logs', 'err warn info');
+
+        $this->channel->queue_bind('queue_logs_all', 'logs', 'err');
+        $this->channel->queue_bind('queue_logs_all', 'logs', 'warn');
+        $this->channel->queue_bind('queue_logs_all', 'logs', 'info');
+
 
         $this->channel->basic_publish($messageInfo, 'logs', 'info');
         $this->channel->basic_publish($messageWarn, 'logs', 'warn');
