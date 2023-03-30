@@ -1,0 +1,15 @@
+{% apply inline_css(source('@css/email.css')) %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>{{ email.subject }}</title>
+</head>
+<body>
+    <h1>
+        Hello, nice to meet you! {{ email.toName }}
+    </h1>
+    <img src="{{ email.image('@images/mur.jpg') }}">
+</body>
+{% endapply %}

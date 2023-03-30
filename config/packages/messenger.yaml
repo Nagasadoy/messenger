@@ -11,16 +11,15 @@ framework:
                     exchange:
                         name: messages
                         type: direct
-                        default_publish_routing_key: xxx
+                        default_publish_routing_key: hhh
                     queues:
                         messages_normal:
                             binding_keys: [hhh]
-                        messages_high:
-                            binding_keys: [hhh]
+#                        messages_high:
+#                            binding_keys: [hhh]
 
             failed: 'doctrine://default?queue_name=failed'
         routing:
-            Symfony\Component\Mailer\Messenger\SendEmailMessage: async
             Symfony\Component\Notifier\Message\ChatMessage: async
             Symfony\Component\Notifier\Message\SmsMessage: async
             App\Event\Dispatcher\Message\Message: async

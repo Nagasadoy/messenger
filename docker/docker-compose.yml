@@ -65,7 +65,11 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
-
+  mailer:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
   kibana:
     container_name: kibana
     image: kibana:7.4.0

@@ -7,10 +7,16 @@ use App\Model\Pizza\Entity\Pizza\Pizza;
 use App\Services\ElasticSearch\ElasticSearch;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class PizzaCreateSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private readonly ElasticSearch $elasticSearch, private readonly LoggerInterface $logger)
+    public function __construct(
+        private readonly ElasticSearch $elasticSearch,
+        private readonly LoggerInterface $logger,
+        private readonly MailerInterface $mailer
+    )
     {
     }
 
@@ -24,6 +30,7 @@ class PizzaCreateSubscriber implements EventSubscriberInterface
     public function onCreate(CreatePizzaEvent $event): void
     {
         $this->logger->info('Pizza created with name ' . $event->name);
+
         $this->elasticSearch->addDocument(Pizza::PIZZA_INDEX, [
             'name' => $event->name,
             'price' => $event->price,
