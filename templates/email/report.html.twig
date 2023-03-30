@@ -1,0 +1,13 @@
+{% apply inline_css(source('@css/email.css')) %}
+    <!doctype html>
+    <html lang="en">
+<head>
+    {{ encore_entry_link_tags('app') }}
+    <title>report</title>
+</head>
+<body>
+<h1>
+    {{ name }}
+</h1>
+</body>
+{% endapply %}

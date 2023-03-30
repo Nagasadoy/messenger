@@ -33,6 +33,7 @@ RUN set -e; \
       locales \
       locales-all \
       librabbitmq-dev \
+      wkhtmltopdf \
     && pecl install amqp \
     && docker-php-ext-enable amqp \
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
@@ -61,6 +62,8 @@ COPY --from=composer:2.3 $COMPOSER_DIR $COMPOSER_DIR
 RUN chmod +x $COMPOSER_DIR
 ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN chown -R $USERNAME:$USERNAME $COMPOSER_DIR
+
+
 
 # set working directory
 WORKDIR $APP_HOME
