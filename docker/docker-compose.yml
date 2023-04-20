@@ -27,6 +27,9 @@ services:
         - "33061:3306"
       volumes:
         - ./mysql/data:/var/lib/mysql
+    node:
+      image: node:latest
+      container_name: ${COMPOSE_PROJECT_NAME}_node
     nginx:
       container_name: ${COMPOSE_PROJECT_NAME}_nginx
       image: nginx:stable-alpine

@@ -27,7 +27,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['user:read', 'user:write', 'treasure:read'])]
+    #[Groups(['user:read', 'user:write', 'treasure:item:get', 'treasure:read', 'treasure:write'])]
     #[Assert\NotBlank]
     private ?string $email = null;
 
@@ -38,11 +38,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'treasure:write'])]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DragonTreasure::class)]
-    #[Groups(['user:read'])]
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DragonTreasure::class, orphanRemoval: true)]
+    #[Groups(['user:read', 'user:write'])]
     private Collection $dragonTreasures;
 
     public function __construct()

@@ -29,8 +29,15 @@ use function Symfony\Component\String\u;
     shortName: 'Treasure',
     description: 'Редкие сокровища дракона',
     operations: [
-        new Get(uriTemplate: '/dragon-plunder/{id}'),
-        new GetCollection(uriTemplate: '/dragon-plunder'),
+        new Get(
+//            uriTemplate: '/dragon-plunder/{id}',
+//            normalizationContext: [
+//                'groups' => ['treasure:read', 'treasure:item:get']
+//            ]
+        ),
+        new GetCollection(
+//            uriTemplate: '/dragon-plunder',
+        ),
         new Post(),
         new Put(),
         new Patch(),
@@ -94,9 +101,10 @@ class DragonTreasure
     #[ApiFilter(BooleanFilter::class)]
     private ?bool $isPublished = null;
 
-    #[ORM\ManyToOne(inversedBy: 'dragonTreasures')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'dragonTreasures')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['treasure:read', 'treasure:write'])]
+    #[Assert\Valid]
     private ?User $owner = null;
 
     public function __construct(string $name)
